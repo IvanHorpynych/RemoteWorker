@@ -10,9 +10,11 @@ public class MainApp extends Application{
     }
 
     public void start(Stage primaryStage) throws Exception {
+        System.out.println(primaryStage.hashCode());
         primaryStage.setTitle("RemoteWorker");
         MainScene mainScene = new MainScene();
         primaryStage.setScene(mainScene.getMainScene());
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }

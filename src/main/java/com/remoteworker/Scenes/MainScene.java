@@ -6,9 +6,6 @@ import javafx.scene.Scene;
 
 import java.io.IOException;
 
-/**
- * Created by Иван on 4/16/2017.
- */
 public class MainScene {
     private Scene mainScene = null;
     public MainScene() throws IOException {
