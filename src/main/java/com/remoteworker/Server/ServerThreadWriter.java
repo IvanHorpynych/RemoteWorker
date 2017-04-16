@@ -4,9 +4,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-/**
- * Created by Иван on 4/15/2017.
- */
 public class ServerThreadWriter implements Runnable{
     private Thread serverWriter = null;
     private Socket fromClient = null;
