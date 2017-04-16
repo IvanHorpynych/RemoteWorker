@@ -1,3 +1,5 @@
+package com.remoteworker.Server;
+
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -11,8 +13,8 @@ public class WServer {
     private int port = 1996;
     private ServerSocket serverSocket = null;
     private Socket fromClient = null;
-    private DataInputStream in = null;
-    private DataOutputStream out = null;
+    private ServerThreadWriter serverThreadWriter = null;
+    private ServerThreadReader serverThreadReader = null;
 
     WServer(){
         try {
@@ -25,24 +27,18 @@ public class WServer {
     void createConnect() throws IOException {
         serverSocket = new ServerSocket(port);
         fromClient = serverSocket.accept();
-        in = new DataInputStream(new BufferedInputStream(fromClient.getInputStream()));
-        out = new DataOutputStream(fromClient.getOutputStream());
+        serverThreadReader = new ServerThreadReader(fromClient);
+        serverThreadWriter = new ServerThreadWriter(fromClient);
         System.out.println("Server is started!!!");
     }
 
-    void wServerWriter(String data) throws IOException {
-        out.writeUTF(data);
-        out.flush();
-    }
-
-    String wServerReader() throws IOException {
-        return in.readUTF();
-    }
 
     void close(){
         try {
-            in.close();
-            out.close();
+            serverThreadReader.getIn().close();
+            serverThreadReader.getServerReader().interrupt();
+            serverThreadWriter.getOut().close();
+            serverThreadWriter.getServerWriter().interrupt();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,18 +47,5 @@ public class WServer {
     public static void main(String[] args) throws IOException {
         System.out.println(InetAddress.getLocalHost());
         WServer server = new WServer();
-        String bufLine = null;
-
-        while (true){
-            bufLine = server.wServerReader();
-            if(bufLine.equals("quit")){
-                server.close();
-                break;
-            }
-            System.out.println("Client message: "+bufLine);
-            server.wServerWriter(bufLine);
-            System.out.println("Waiting for the next line...");
-            System.out.println();
-        }
     }
 }
