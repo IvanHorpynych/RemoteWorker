@@ -1,25 +1,27 @@
-package com.remoteworker.Scenes.Controller;
+package com.remoteworker.Scenes.Controllers;
 
-import com.remoteworker.Scenes.MainScene;
+import com.remoteworker.Scenes.MainSceneLoader;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ServerController implements Initializable {
+
+public class ClientController implements Initializable {
     @FXML
-    Button ServerDisconnBtn;
+    Button ClientDisconnBtn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ServerDisconnBtn.setOnAction(event -> {
-            Stage primaryStage = (Stage) ServerDisconnBtn.getScene().getWindow();
+        ClientDisconnBtn.setOnAction(event -> {
+            Stage primaryStage = (Stage)ClientDisconnBtn.getScene().getWindow();
             try {
-                primaryStage.setScene(new MainScene().getMainScene());
+                primaryStage.setScene(new MainSceneLoader().getMainScene());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -29,4 +31,3 @@ public class ServerController implements Initializable {
         });
     }
 }
-

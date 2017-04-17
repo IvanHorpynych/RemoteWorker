@@ -1,12 +1,15 @@
-package com.remoteworker.Scenes.Controller;
+package com.remoteworker.Scenes.Controllers;
 
-import com.remoteworker.Scenes.ClientScene;
-import com.remoteworker.Scenes.ServerScene;
+import com.remoteworker.Client.WClient;
+import com.remoteworker.Scenes.ClientSceneLoader;
+import com.remoteworker.Scenes.ServerSceneLoader;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -23,6 +26,10 @@ public class MainController implements Initializable {
     Button ClientConnBtn;
     @FXML
     Button ServerConnBtn;
+    @FXML
+    TextField IPfield;
+    @FXML
+    ImageView imgView;
 
     public void initialize(URL location, ResourceBundle resources) {
         String buf;
@@ -35,7 +42,7 @@ public class MainController implements Initializable {
                 ClientConnBtn.setOnAction(event -> {
             Stage primaryStage = (Stage) ClientConnBtn.getScene().getWindow();
             try {
-                ClientScene clientScene = new ClientScene(primaryStage);
+                ClientSceneLoader clientScene = new ClientSceneLoader(primaryStage);
                 primaryStage.setScene(clientScene.getClientScene());
 
                 Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -44,6 +51,8 @@ public class MainController implements Initializable {
                 primaryStage.setY(primaryScreenBounds.getMinY());
                 primaryStage.setWidth(primaryScreenBounds.getWidth());
                 primaryStage.setHeight(primaryScreenBounds.getHeight());
+                WClient wClient = new WClient(IPfield.getText(),imgView);
+
                 primaryStage.show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -51,10 +60,10 @@ public class MainController implements Initializable {
         });
 
         ServerConnBtn.setOnAction(event -> {
-            ServerScene serverScene = null;
+            ServerSceneLoader serverScene = null;
             Stage primaryStage = (Stage) ServerConnBtn.getScene().getWindow();
             try {
-                serverScene = new ServerScene();
+                serverScene = new ServerSceneLoader();
             } catch (IOException e) {
                 e.printStackTrace();
             }

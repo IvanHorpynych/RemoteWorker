@@ -1,5 +1,7 @@
 package com.remoteworker.Client;
 
+import javafx.scene.image.ImageView;
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -7,15 +9,17 @@ import java.util.ArrayList;
 
 public class WClient {
     private Socket fromServer = null;
-    ClientThreadReader clientThreadReader = null;
-    ClientThreadWriter clientThreadWriter = null;
-    ArrayList<Integer> queue = null;
+    private ClientThreadReader clientThreadReader = null;
+    private ClientThreadWriter clientThreadWriter = null;
+    private ImageView imageView = null;
+    private ArrayList<Integer> queue = null;
 
     protected BufferedReader keyboardInput = null;
     private String ip;
 
-    WClient(String ip) {
+    public WClient(String ip, ImageView imageView) {
         this.ip = ip;
+        this.imageView = imageView;
         try {
             ConnecntToServer();
         } catch (IOException e) {
@@ -27,7 +31,7 @@ public class WClient {
         InetAddress ipAddress = InetAddress.getByName(ip);
         fromServer = new Socket(ipAddress, 1996);
         queue = new ArrayList<Integer>();
-        clientThreadReader = new ClientThreadReader(fromServer);
+        clientThreadReader = new ClientThreadReader(fromServer, imageView);
         clientThreadWriter = new ClientThreadWriter(fromServer,queue);
     }
 
@@ -44,7 +48,7 @@ public class WClient {
     }
 
 
-    public static void main(String[] args) throws IOException {
+   /* public static void main(String[] args) throws IOException {
         WClient client = new WClient("127.0.0.1");
         client.keyboardInput = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Type in something and press enter.");
@@ -54,5 +58,5 @@ public class WClient {
             client.queue.add(Integer.getInteger(client.keyboardInput.readLine()));
         }
 
-    }
+    }*/
 }

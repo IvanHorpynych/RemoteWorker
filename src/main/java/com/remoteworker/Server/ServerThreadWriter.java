@@ -1,18 +1,24 @@
 package com.remoteworker.Server;
 
-import java.io.DataOutputStream;
+
+
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 public class ServerThreadWriter implements Runnable{
     private Thread serverWriter = null;
     private Socket fromClient = null;
-    private DataOutputStream out = null;
+    private ImageOutputStream out = null;
 
     ServerThreadWriter(Socket fromClient){
         this.fromClient = fromClient;
         try {
-            out = new DataOutputStream(this.fromClient.getOutputStream());
+            out = ImageIO.createImageOutputStream(new BufferedOutputStream(this.fromClient.getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -20,8 +26,8 @@ public class ServerThreadWriter implements Runnable{
         serverWriter.start();
     }
 
-    void wServerWriter(byte b) throws IOException {
-        out.writeByte(b);
+    void wServerWriter(BufferedImage bi) throws IOException {
+        ImageIO.write(bi, "jpg", out);
         out.flush();
     }
 
@@ -29,14 +35,26 @@ public class ServerThreadWriter implements Runnable{
         return serverWriter;
     }
 
-    DataOutputStream getOut(){
+    ImageOutputStream getOut(){
         return out;
     }
     public void run() {
+        Robot robot = null;
+        try {
+            robot = new Robot();
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+        BufferedImage bi = null;
         while (true){
+            bi = robot.createScreenCapture(screenRect);
             try {
-                wServerWriter(((byte)0));
+                wServerWriter(bi);
+                Thread.sleep(1000/30);
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }

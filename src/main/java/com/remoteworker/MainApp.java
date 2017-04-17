@@ -1,6 +1,6 @@
 package com.remoteworker;
 
-import com.remoteworker.Scenes.MainScene;
+import com.remoteworker.Scenes.MainSceneLoader;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,7 +11,7 @@ public class MainApp extends Application{
 
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("RemoteWorker");
-        MainScene mainScene = new MainScene();
+        MainSceneLoader mainScene = new MainSceneLoader();
         primaryStage.setScene(mainScene.getMainScene());
         primaryStage.setResizable(false);
         primaryStage.setWidth(600);

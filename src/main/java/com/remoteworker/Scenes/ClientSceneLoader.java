@@ -9,15 +9,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ClientScene {
+public class ClientSceneLoader {
 
     private Scene clientScene = null;
-    public ClientScene(Stage primaryStage) throws IOException {
+    public ClientSceneLoader(Stage primaryStage) throws IOException {
         String fxmlFile = "/fxml/client.fxml";
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));
         clientScene = new Scene(root);
-        ImageView imageView = new ImageView();
+        ImageView imageView =(ImageView) clientScene.lookup("#imgView");
         imageView.fitWidthProperty().bind(primaryStage.widthProperty());
         imageView.fitHeightProperty().bind(primaryStage.heightProperty());
         ((BorderPane)root).setCenter(imageView);

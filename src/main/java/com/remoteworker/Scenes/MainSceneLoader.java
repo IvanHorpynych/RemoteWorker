@@ -6,9 +6,9 @@ import javafx.scene.Scene;
 
 import java.io.IOException;
 
-public class MainScene {
+public class MainSceneLoader {
     private Scene mainScene = null;
-    public MainScene() throws IOException {
+    public MainSceneLoader() throws IOException {
         String fxmlFile = "/fxml/main.fxml";
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResourceAsStream(fxmlFile));

@@ -1,19 +1,26 @@
 package com.remoteworker.Client;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.ImageView;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 public class ClientThreadReader implements Runnable {
-    Thread ClientReader = null;
+    private Thread ClientReader = null;
     private Socket fromServer = null;
-    private DataInputStream in = null;
+    private ImageView imageView = null;
+    private BufferedInputStream in = null;
 
-    ClientThreadReader(Socket fromServer) {
+    ClientThreadReader(Socket fromServer, ImageView imageView) {
         this.fromServer = fromServer;
+        this.imageView = imageView;
         try {
-            in = new DataInputStream(new BufferedInputStream(this.fromServer.getInputStream()));
+            in = new BufferedInputStream(this.fromServer.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -21,11 +28,11 @@ public class ClientThreadReader implements Runnable {
         ClientReader.start();
     }
 
-    byte wClientReader() throws IOException {
-        return in.readByte();
+    BufferedImage wClientReader() throws IOException {
+        return ImageIO.read(in);
     }
 
-    DataInputStream getIn() {
+    BufferedInputStream getIn() {
         return in;
     }
 
@@ -34,10 +41,12 @@ public class ClientThreadReader implements Runnable {
     }
 
     public void run() {
+        BufferedImage bufferImage = null;
         while (true) {
             try {
                 System.out.println("ClientReader start!!!");
-                wClientReader();
+                bufferImage = wClientReader();
+                imageView.setImage(SwingFXUtils.toFXImage(bufferImage, null));
             } catch (IOException e) {
                 e.printStackTrace();
             }
