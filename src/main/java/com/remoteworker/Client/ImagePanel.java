@@ -5,13 +5,31 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 class ImagePanel extends JComponent {
+
     private BufferedImage image;
-    double scaleX = 1;
-    double scaleY = 1;
+    private double scaleX = 1;
+    private double scaleY = 1;
+    private int clientW, clientH;
 
     public void refreshImage(BufferedImage image) {
         this.image = image;
         this.repaint();
+    }
+
+    public double getScaleX() {
+        return scaleX;
+    }
+
+    public double getScaleY() {
+        return scaleY;
+    }
+
+    public int getClientW() {
+        return clientW;
+    }
+
+    public int getClientH() {
+        return clientH;
     }
 
     @Override
@@ -20,10 +38,11 @@ class ImagePanel extends JComponent {
         if (image == null) {
             return;
         }
-        int frameWidth = g.getClipBounds().width;
-        int frameHeight = g.getClipBounds().height;
-        scaleX = image.getWidth() / (double) frameWidth;
-        scaleY = image.getHeight() / (double) frameHeight;
-        g.drawImage(image, 0, 0, frameWidth, frameHeight, this);
+        clientW = g.getClipBounds().width;
+        clientH = g.getClipBounds().height;
+        scaleX = image.getWidth() / (double) clientW;
+        scaleY = image.getHeight() / (double) clientH;
+        g.drawImage(image, 0, 0, clientW, clientH, this);
     }
+
 }
