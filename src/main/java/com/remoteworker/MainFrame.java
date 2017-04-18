@@ -1,6 +1,9 @@
 
 package com.remoteworker;
 
+import com.remoteworker.Client.ClientFrame;
+import com.remoteworker.Server.ServerFrame;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
